@@ -1,25 +1,21 @@
-import 'package:angel_framework/angel_framework.dart';
-
 /// A collection of 11 middleware and handlers to help secure your application
 /// using HTTP headers.
-AngelConfigurer helmet() {
-  throw new Exception("Helmet isn't ready just yet! ;)");
+library angel_helmet;
 
+import 'package:angel_framework/angel_framework.dart';
+
+/// Configures your application to use the most common handlers from the library.
+AngelConfigurer helmet() {
   return (Angel app) async {
-    app.before.add(waterfall([
-      contentSecurityPolicy(),
+    app.responseFinalizers.add(waterfall([
       dnsPrefetchControl(),
       frameguard(),
-      hpkp(),
+      hidePoweredBy(),
       hsts(),
       ieNoOpen(),
-      noCache(),
       noSniff(),
-      referrerPolicy(),
       xssFilter()
     ]));
-
-    app.responseFinalizers.addAll([hidePoweredBy]);
   };
 }
 
